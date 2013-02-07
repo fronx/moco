@@ -17,6 +17,18 @@
     return r;
   }
 
+  // http://stackoverflow.com/questions/8618464/how-to-wait-for-another-js-to-load-to-proceed-operation
+  function whenAvailable (name, callback) {
+    var interval = 10; // ms
+    window.setTimeout(function() {
+      if (window[name]) {
+        callback(window[name]);
+      } else {
+        window.setTimeout(arguments.callee, interval);
+      }
+    }, interval);
+  }
+
   function get (url, fn) {
     console.log(url);
     var request = new XMLHttpRequest();
@@ -38,10 +50,16 @@
   d.body
     .appendChild(d.createElement('script'))
     .src = 'https://raw.github.com/marijnh/acorn/master/acorn.js';
-  get(rawUrl, function (code) {
-    doc  = JSON.parse(code);
-    code = decodeBase64(doc['content'].split("\n").join(''));
+  get(rawUrl, function (response) {
+    doc   = JSON.parse(response);
+    lines64 = doc['content'].split("\n")
+    lines = decodeBase64(lines64.join(''));
+    lines = lines.split("\n");
+    lines.pop();
+    code = lines.join("\n");
     console.log(code);
-    console.log(acorn.parse(code));
+    whenAvailable('acorn', function () {
+      tree = acorn.parse(code)
+    });
   });
 })(document);
