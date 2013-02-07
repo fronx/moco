@@ -71,19 +71,15 @@ Moco.createTextArea = function () {
 
 Moco.initEditor = function (textarea, code) {
   textarea.value = code;
-  whenAvailable(window, 'CodeMirror', function () {
-    whenAvailable(CodeMirror, 'newFoldFunction', function () {
-      var foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
-      window.editor = CodeMirror.fromTextArea(textarea, {
-        mode: "javascript",
-        lineNumbers: true,
-        lineWrapping: true
-      });
-      editor.on("gutterClick", foldFunc);
-      foldFunc(editor, 2); // todo: do this for all function declarations
-      // pre > span.cm-keyword[text="function"]
-    });
+  var foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
+  window.editor = CodeMirror.fromTextArea(textarea, {
+    mode: "javascript",
+    lineNumbers: true,
+    lineWrapping: true
   });
+  editor.on("gutterClick", foldFunc);
+  foldFunc(editor, 2); // todo: do this for all function declarations
+  // pre > span.cm-keyword[text="function"]
 }
 
 Moco.githubApiUrl = function (url) {
