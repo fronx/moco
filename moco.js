@@ -40,7 +40,7 @@
     request.send(null);
   }
   // gather info
-  var rawUrl = "https://api.github.com/repos/marijnh/acorn/contents/acorn.js"; // d.getElementById('raw-url').href;
+  var rawUrl = window.location.href.replace('//github.com', '//api.github.com/repos').replace('/blob/master/', '/contents/')
 
   // remove all the content!!!
   d.getElementById('wrapper').remove();

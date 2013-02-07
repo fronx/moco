@@ -34,5 +34,7 @@ sooo... use a parser?
   <span class="vi">@env</span>      <span class="o">=</span> <span class="no">EnvSet</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">env_set_repo</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">data</span><span class="o">[</span><span class="s1">'env'</span><span class="o">]</span> <span class="o">||</span> <span class="p">{}))</span></div>
 ```
 
-## todo
-- read file content, store it in a variable, pass it to the parser
+## parse tree
+"Nodes have their start and end characters offsets recorded in start and end properties (directly on the node, rather than the loc object, which holds line/column data."
+^-- so this is how i can map back to the original representation of the code! :)
+
