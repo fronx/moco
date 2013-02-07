@@ -61,16 +61,15 @@ Moco.createTextArea = function () {
 
 Moco.initEditor = function (textarea, code, mode) {
   textarea.value = code;
-  var foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
+  Moco.foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
   window.editor = CodeMirror.fromTextArea(textarea, {
-    mode: mode,
-    lineNumbers: true,
+    mode:         mode,
+    lineNumbers:  true,
     lineWrapping: true,
-    readOnly: 'nocursor'
+    readOnly:     'nocursor'
   });
-  editor.on("gutterClick", foldFunc);
-  foldFunc(editor, 2); // todo: do this for all function declarations
-  // pre > span.cm-keyword[text="function"]
+  editor.on("gutterClick", Moco.foldFunc);
+  return window.editor;
 }
 
 Moco.githubApiUrl = function (url) {
@@ -95,14 +94,22 @@ function toArray (weirdness) {
   return Array.prototype.slice.call(weirdness);
 }
 
+function isKeyWord (token, keyword) {
+  return (token.className == "cm-keyword") && (token.innerHTML == keyword)
+}
+
+function any (list, fn) {
+  return toArray(list).filter(fn).length > 0
+}
+
 Moco.linesWithFunction = function () {
-  return toArray(Moco.editorLineElements).filter(function (line) {
-    return (
-      toArray(line.children).filter(function(token) {
-        return (a.className == "cm-keyword") && (a.innerHTML == 'function')
-      }).length > 0
-    )
-  })
+  return toArray(Moco.editorLineElements()).reduce(function (acc, line, index) {
+    if (any(line.children, function (token) { return isKeyWord(token, 'function') })) {
+      return acc.concat([index])
+    } else {
+      return acc
+    }
+  }, []) // initial value
 }
 
 Moco.foldFunctions = function () {
