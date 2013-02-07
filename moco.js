@@ -69,11 +69,11 @@ Moco.createTextArea = function () {
   return elem;
 }
 
-Moco.initEditor = function (textarea, code) {
+Moco.initEditor = function (textarea, code, mode) {
   textarea.value = code;
   var foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
   window.editor = CodeMirror.fromTextArea(textarea, {
-    mode: "javascript",
+    mode: mode,
     lineNumbers: true,
     lineWrapping: true
   });
@@ -86,13 +86,22 @@ Moco.githubApiUrl = function (url) {
   return url.replace('//github.com', '//api.github.com/repos').replace('/blob/master/', '/contents/');
 }
 
-Moco.editor = function (url) {
+Moco.editor = function (url, mode) {
   Moco.get(Moco.githubApiUrl(url), function (response) {
     Moco.initEditor(
       Moco.createTextArea(),
-      Moco.unpackContentAsCode(response)
+      Moco.unpackContentAsCode(response),
+      mode
     );
   });
+}
+
+Moco.editorLineElements = function () {
+  return document.querySelectorAll('.CodeMirror-lines pre');
+}
+
+Moco.foldFunctions = function () {
+  '.CodeMirror-lines pre span'
 }
 
 Moco.replacePage = function () {
