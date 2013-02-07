@@ -19,11 +19,11 @@
   }
 
   // http://stackoverflow.com/questions/8618464/how-to-wait-for-another-js-to-load-to-proceed-operation
-  function whenAvailable (name, callback) {
+  function whenAvailable (parent, name, callback) {
     var interval = 10; // ms
     window.setTimeout(function() {
-      if (window[name]) {
-        callback(window[name]);
+      if (parent[name]) {
+        callback(parent[name]);
       } else {
         window.setTimeout(arguments.callee, interval);
       }
@@ -58,8 +58,8 @@
   var rawUrl = window.location.href.replace('//github.com', '//api.github.com/repos').replace('/blob/master/', '/contents/')
 
   // remove all the content!!!
-  document.getElementById('wrapper').remove();
-  document.getElementById('footer').remove();
+  while (document.body.firstChild) { document.body.removeChild(document.body.firstChild) };
+  while (document.head.firstChild) { document.head.removeChild(document.head.firstChild) };
 
   // the post-content world
   function loadScript (url) {
@@ -67,7 +67,15 @@
       .appendChild(document.createElement('script'))
       .src = url;
   }
-  loadScript('https://raw.github.com/marijnh/acorn/master/acorn.js');
+  function loadStyles (url) {
+    elem = document.createElement('link');
+    elem.rel = 'stylesheet';
+    elem.type = 'text/css';
+    elem.href = url;
+    document.body.appendChild(elem);
+  }
+  loadStyles('http://codemirror.net/lib/codemirror.css');
+  loadScript('https://raw.github.com/marijnh/CodeMirror/master/lib/codemirror.js');
 
   get(rawUrl, function (response) {
     Moco.doc = JSON.parse(response);
@@ -76,13 +84,23 @@
     Moco.lines = Moco.lines.split("\n");
     Moco.lines.pop();
     Moco.code = Moco.lines.join("\n");
-    whenAvailable('acorn', function () {
-      Moco.tree = acorn.parse(Moco.code);
-      console.log(Moco);
-      Moco.root = document.createElement('div');
-      Moco.root.id = 'moco-root';
-      document.body.appendChild(Moco.root);
-      treeNodeToDom(Moco.root);
+    whenAvailable(window, 'CodeMirror', function () {
+      loadScript('https://raw.github.com/marijnh/CodeMirror/master/addon/fold/foldcode.js');
+      whenAvailable(CodeMirror, 'newFoldFunction', function () {
+        Moco.root = document.createElement('textarea');
+        Moco.root.id = 'moco-root';
+        document.body.appendChild(Moco.root);
+        Moco.root.value = Moco.code;
+        var foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
+        window.editor = CodeMirror.fromTextArea(Moco.root, {
+          mode: "javascript",
+          lineNumbers: true,
+          lineWrapping: true
+        });
+        editor.on("gutterClick", foldFunc);
+        foldFunc(editor, 2); // todo: do this for all function declarations
+        // pre > span.cm-keyword[text="function"]
+      });
     });
   });
 })();
