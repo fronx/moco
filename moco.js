@@ -1,16 +1,16 @@
 (function(d){
-  function syncGet (url) {
+  function get (url, fn) {
     console.log(url);
     var request = new XMLHttpRequest();
-    request.open('GET', url, false);
+    request.open('GET', url, true);
+    request.onload = function () {
+      console.log(this.responseText);
+      fn(this.responseText);
+    };
     request.send(null);
-    if (request.status === 200) {
-      return request.responseText;
-    }
   }
   // gather info
   var rawUrl = d.getElementById('raw-url').href;
-  console.log(rawUrl);
 
   // remove all the content!!!
   d.getElementById('wrapper').remove();
@@ -20,6 +20,7 @@
   d.body
     .appendChild(d.createElement('script'))
     .src = 'https://raw.github.com/marijnh/acorn/master/acorn.js';
-  var code = syncGet(rawUrl);
-  console.log(acorn.parse(code));
+  get(rawUrl, function (code) {
+    console.log(acorn.parse(code));
+  });
 })(document);
