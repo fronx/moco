@@ -1,4 +1,5 @@
 (function(d){
+  Moco = {};
   // http://stackoverflow.com/questions/2820249/base64-encoding-and-decoding-in-client-side-javascript
   function decodeBase64 (s) {
     var e={},i,k,v=[],r='',w=String.fromCharCode;
@@ -30,11 +31,9 @@
   }
 
   function get (url, fn) {
-    console.log(url);
     var request = new XMLHttpRequest();
     request.open('GET', url, true);
     request.onload = function () {
-      console.log(this.responseText);
       fn(this.responseText);
     };
     request.send(null);
@@ -51,15 +50,15 @@
     .appendChild(d.createElement('script'))
     .src = 'https://raw.github.com/marijnh/acorn/master/acorn.js';
   get(rawUrl, function (response) {
-    doc   = JSON.parse(response);
-    lines64 = doc['content'].split("\n")
-    lines = decodeBase64(lines64.join(''));
-    lines = lines.split("\n");
-    lines.pop();
-    code = lines.join("\n");
-    console.log(code);
+    Moco.doc = JSON.parse(response);
+    var lines64 = Moco.doc['content'].split("\n")
+    Moco.lines = decodeBase64(lines64.join(''));
+    Moco.lines = Moco.lines.split("\n");
+    Moco.lines.pop();
+    Moco.code = Moco.lines.join("\n");
     whenAvailable('acorn', function () {
-      tree = acorn.parse(code)
+      Moco.tree = acorn.parse(Moco.code);
+      console.log(Moco);
     });
   });
 })(document);
