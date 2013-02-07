@@ -98,13 +98,9 @@ function isKeyWord (token, keyword) {
   return (token.className == "cm-keyword") && (token.innerHTML == keyword)
 }
 
-function any (list, fn) {
-  return toArray(list).filter(fn).length > 0
-}
-
 Moco.linesWithFunction = function () {
   return toArray(Moco.editorLineElements()).reduce(function (acc, line, index) {
-    if (any(line.children, function (token) { return isKeyWord(token, 'function') })) {
+    if (toArray(line.children).some(function (token) { return isKeyWord(token, 'function') })) {
       return acc.concat([index])
     } else {
       return acc
