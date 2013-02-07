@@ -21,11 +21,12 @@ no  name (mention)
 
 ````
 
-## methods
+## methods (ruby)
 .k def
 no start/end scope :(
 language-specific
 sooo... use a parser?
+also: do javascript first.
 
 ## whitespace
 ```html
@@ -38,3 +39,17 @@ sooo... use a parser?
 "Nodes have their start and end characters offsets recorded in start and end properties (directly on the node, rather than the loc object, which holds line/column data."
 ^-- so this is how i can map back to the original representation of the code! :)
 
+## functions (js)
+examples:
+```js
+  exports.parse_dammit = function(inpt, opts) {
+  }
+  // -> MemberExpression
+  function name () {
+  }
+  // type: FunctionDeclaration
+  // id:
+```
+
+## todo
+- also show comments! --> onComment

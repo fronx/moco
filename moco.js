@@ -1,4 +1,4 @@
-(function(d){
+(function(){
   Moco = {};
   // http://stackoverflow.com/questions/2820249/base64-encoding-and-decoding-in-client-side-javascript
   function decodeBase64 (s) {
@@ -38,17 +38,37 @@
     };
     request.send(null);
   }
+
+  function treeNodeToDom (parent, node, code) {
+    elem = document.createElement('div');
+    elem.className = node.Type;
+    if (elem.body instanceof Array) {
+      elem.body.each(function (child) {
+        parent.appendChild(
+          treeNodeToDom(elem, child, code)
+        );
+      })
+    } else {
+      parent.appendChild(
+        treeNodeToDom(elem, elem.body, code)
+      );
+    }
+  }
   // gather info
   var rawUrl = window.location.href.replace('//github.com', '//api.github.com/repos').replace('/blob/master/', '/contents/')
 
   // remove all the content!!!
-  d.getElementById('wrapper').remove();
-  d.getElementById('footer').remove();
+  document.getElementById('wrapper').remove();
+  document.getElementById('footer').remove();
 
   // the post-content world
-  d.body
-    .appendChild(d.createElement('script'))
-    .src = 'https://raw.github.com/marijnh/acorn/master/acorn.js';
+  function loadScript (url) {
+    document.body
+      .appendChild(document.createElement('script'))
+      .src = url;
+  }
+  loadScript('https://raw.github.com/marijnh/acorn/master/acorn.js');
+
   get(rawUrl, function (response) {
     Moco.doc = JSON.parse(response);
     var lines64 = Moco.doc['content'].split("\n")
@@ -59,6 +79,10 @@
     whenAvailable('acorn', function () {
       Moco.tree = acorn.parse(Moco.code);
       console.log(Moco);
+      Moco.root = document.createElement('div');
+      Moco.root.id = 'moco-root';
+      document.body.appendChild(Moco.root);
+      treeNodeToDom(Moco.root);
     });
   });
-})(document);
+})();
