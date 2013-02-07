@@ -63,14 +63,14 @@ Moco.unpackContentAsCode = function (response) {
   return code;
 }
 
-Moco.createTextArea = function (code) {
+Moco.createTextArea = function () {
   var elem = document.createElement('textarea');
   document.body.appendChild(elem);
-  elem.value = code;
   return elem;
 }
 
-Moco.initEditor = function (textarea) {
+Moco.initEditor = function (textarea, code) {
+  textarea.value = code;
   whenAvailable(window, 'CodeMirror', function () {
     whenAvailable(CodeMirror, 'newFoldFunction', function () {
       var foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
@@ -86,23 +86,31 @@ Moco.initEditor = function (textarea) {
   });
 }
 
+Moco.githubApiUrl = function (url) {
+  return url.replace('//github.com', '//api.github.com/repos').replace('/blob/master/', '/contents/');
+}
+
+Moco.editor = function (url) {
+  Moco.get(Moco.githubApiUrl(url), function (response) {
+    Moco.initEditor(
+      Moco.createTextArea(),
+      Moco.unpackContentAsCode(response)
+    );
+  });
+}
+
 Moco.replacePage = function () {
   // gather info
-  var rawUrl = window.location.href.replace('//github.com', '//api.github.com/repos').replace('/blob/master/', '/contents/')
+  var codeFileUrl = window.location.href;
 
   // remove all the content!!!
   while (document.body.firstChild) { document.body.removeChild(document.body.firstChild) };
   while (document.head.firstChild) { document.head.removeChild(document.head.firstChild) };
 
   // the post-content world
-  Moco.loadStyles('http://codemirror.net/lib/codemirror.css');
+  Moco.loadStyles('https://raw.github.com/marijnh/CodeMirror/master/lib/codemirror.css');
   Moco.loadScript('https://raw.github.com/marijnh/CodeMirror/master/lib/codemirror.js');
   Moco.loadScript('https://raw.github.com/marijnh/CodeMirror/master/addon/fold/foldcode.js');
 
-  Moco.get(rawUrl, function (response) {
-    var textarea = Moco.createTextArea(
-      Moco.unpackContentAsCode(response)
-    );
-    Moco.initEditor(textarea)
-  });
+  Moco.editorFromUrl(codeFileUrl);
 }
