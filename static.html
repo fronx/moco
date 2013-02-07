@@ -19,7 +19,8 @@ window.onload = function() {
     code,
     "javascript"
   );
-  Moco.linesWithFunction().forEach(function (lineNum) {
+
+  Moco.linesWithFunction().reverse().forEach(function (lineNum) {
     Moco.foldFunc(editor, lineNum);
   });
 }
