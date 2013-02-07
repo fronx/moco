@@ -1,7 +1,9 @@
+(function () {
+
 Moco = {};
 
 // http://stackoverflow.com/questions/2820249/base64-encoding-and-decoding-in-client-side-javascript
-Moco.decodeBase64 = function (s) {
+decodeBase64 = function (s) {
   var e={},i,k,v=[],r='',w=String.fromCharCode;
   var n=[[65,91],[97,123],[48,58],[43,44],[47,48]];
 
@@ -18,19 +20,7 @@ Moco.decodeBase64 = function (s) {
   return r;
 }
 
-// http://stackoverflow.com/questions/8618464/how-to-wait-for-another-js-to-load-to-proceed-operation
-Moco.whenAvailable = function (parent, name, callback) {
-  var interval = 10; // ms
-  window.setTimeout(function() {
-    if (parent[name]) {
-      callback(parent[name]);
-    } else {
-      window.setTimeout(arguments.callee, interval);
-    }
-  }, interval);
-}
-
-Moco.get = function (url, fn) {
+function get (url, fn) {
   var request = new XMLHttpRequest();
   request.open('GET', url, true);
   request.onload = function () {
@@ -39,13 +29,13 @@ Moco.get = function (url, fn) {
   request.send(null);
 }
 
-Moco.loadScript = function (url) {
+function loadScript (url) {
   document.body
     .appendChild(document.createElement('script'))
     .src = url;
 }
 
- Moco.loadStyles = function (url) {
+function loadStyles (url) {
   elem = document.createElement('link');
   elem.rel = 'stylesheet';
   elem.type = 'text/css';
@@ -88,7 +78,7 @@ Moco.githubApiUrl = function (url) {
 }
 
 Moco.editor = function (url, mode) {
-  Moco.get(Moco.githubApiUrl(url), function (response) {
+  get(Moco.githubApiUrl(url), function (response) {
     Moco.initEditor(
       Moco.createTextArea(),
       Moco.unpackContentAsCode(response),
@@ -99,6 +89,20 @@ Moco.editor = function (url, mode) {
 
 Moco.editorLineElements = function () {
   return document.querySelectorAll('.CodeMirror-lines pre');
+}
+
+function toArray (weirdness) {
+  return Array.prototype.slice.call(weirdness);
+}
+
+Moco.linesWithFunction = function () {
+  return toArray(Moco.editorLineElements).filter(function (line) {
+    return (
+      toArray(line.children).filter(function(token) {
+        return (a.className == "cm-keyword") && (a.innerHTML == 'function')
+      }).length > 0
+    )
+  })
 }
 
 Moco.foldFunctions = function () {
@@ -114,9 +118,11 @@ Moco.replacePage = function () {
   while (document.head.firstChild) { document.head.removeChild(document.head.firstChild) };
 
   // the post-content world
-  Moco.loadStyles('https://raw.github.com/marijnh/CodeMirror/master/lib/codemirror.css');
-  Moco.loadScript('https://raw.github.com/marijnh/CodeMirror/master/lib/codemirror.js');
-  Moco.loadScript('https://raw.github.com/marijnh/CodeMirror/master/addon/fold/foldcode.js');
+  loadStyles('https://raw.github.com/marijnh/CodeMirror/master/lib/codemirror.css');
+  loadScript('https://raw.github.com/marijnh/CodeMirror/master/lib/codemirror.js');
+  loadScript('https://raw.github.com/marijnh/CodeMirror/master/addon/fold/foldcode.js');
 
   Moco.editorFromUrl(codeFileUrl);
 }
+
+})();
