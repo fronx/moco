@@ -65,7 +65,7 @@ Moco.initEditor = function (textarea, code, mode) {
   window.editor = CodeMirror.fromTextArea(textarea, {
     mode:         mode,
     lineNumbers:  true,
-    lineWrapping: true,
+    lineWrapping: false,
     readOnly:     'nocursor'
   });
   editor.on("gutterClick", Moco.foldFunc);
