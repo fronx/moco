@@ -120,6 +120,8 @@ Moco.setUpTokenTouchEvents = function () {
       value = evt.target.outerText
       type  = evt.target.classList[0]
       Moco.highlight(type, value);
+    } else {
+      Moco.clearHighlights();
     }
   }, false);
 }
