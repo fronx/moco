@@ -18,8 +18,9 @@ body {
 }
 
 .CodeMirror pre.function {
-  background-color: #d6e4f2;
-  border-top: 1px solid #fff;
+  background-color: #333;
+  border-top: 1px solid #555;
+  border-bottom: 1px solid #111;
   line-height: 1.8;
 }
 
