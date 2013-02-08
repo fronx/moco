@@ -28,6 +28,13 @@ body {
   background-color: #78c56e;
 }
 
+.CodeMirror pre span.pre-highlight {
+  color: black;
+  background-color: #fff;
+  border: 1px solid #111;
+  padding: 0 3px;
+}
+
 .CodeMirror pre span.highlight {
   color: black;
   background-color: #ddd;
