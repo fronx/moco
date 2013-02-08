@@ -30,5 +30,18 @@ body {
 
 .CodeMirror pre span.highlight {
   color: black;
-  background-color: #ccc;
+  background-color: #ddd;
+}
+
+.controls {
+  background: #eee;
+}
+.controls a {
+  color: #111;
+  font-size: 12px;
+  background-color: #fff;
+  text-decoration: none;
+  display: inline-block;
+  padding: 7px 10px;
+  border-right: 1px solid #777;
 }
