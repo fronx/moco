@@ -27,3 +27,8 @@ body {
 .CodeMirror-gutter-elt {
   background-color: #78c56e;
 }
+
+.CodeMirror pre span.highlight {
+  color: yellow;
+  background-color: #555;
+}
