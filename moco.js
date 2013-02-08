@@ -64,9 +64,11 @@ Moco.initEditor = function (textarea, code, mode) {
   Moco.foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
   window.editor = CodeMirror.fromTextArea(textarea, {
     mode:         mode,
-    lineNumbers:  true,
     lineWrapping: false,
-    readOnly:     'nocursor'
+    readOnly:     'nocursor',
+    lineNumbers:  false,
+    fixedGutter:  false,
+    theme:        'ambience'
   });
   editor.on("gutterClick", Moco.foldFunc);
   return window.editor;
