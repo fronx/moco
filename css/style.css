@@ -13,6 +13,10 @@ body {
   line-height: 1.8;
 }
 
+.CodeMirror pre {
+  font-size: 10px;
+}
+
 .CodeMirror pre.function {
   border: 1px solid red;
 }
