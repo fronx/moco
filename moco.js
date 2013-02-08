@@ -73,7 +73,12 @@ Moco.createTextArea = function () {
 
 Moco.initEditor = function (textarea, code, mode) {
   textarea.value = code;
-  Moco.foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder);
+  var text = document.createTextNode("...");
+  var foldWidget = document.createElement('div.fold');
+  foldWidget.className = "CodeMirror-foldmarker";
+  foldWidget.appendChild(text);
+
+  Moco.foldFunc = CodeMirror.newFoldFunction(CodeMirror.braceRangeFinder, foldWidget);
   window.editor = CodeMirror.fromTextArea(textarea, {
     mode:         mode,
     lineWrapping: false,
