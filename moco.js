@@ -121,7 +121,8 @@ Moco.setUpTokenTouchEvents = function () {
       type  = evt.target.classList[0]
       Moco.highlight(type, value);
     } else {
-      Moco.clearHighlights();
+      // don't clear it, because scrolling.
+      // Moco.clearHighlights();
     }
   }, false);
 }
@@ -152,6 +153,12 @@ Moco.linesWithFunction = function () {
       return acc
     }
   }, []) // initial value
+}
+
+Moco.expandAll = function () {
+  editor.eachLine(function (handle) {
+    Moco.foldFunc(editor, editor.getLineNumber(handle));
+  })
 }
 
 Moco.replacePage = function () {
