@@ -9,3 +9,5 @@ CodeMirror.defineMIME
 ## todo
 - add gutter for folding
 - tap span: highlight all others
+- fix off-by-one error
+- dom can change.. how to keep events alive?

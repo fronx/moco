@@ -114,6 +114,9 @@ Moco.highlight = function (type, value) {
 }
 
 Moco.setUpTokenTouchEvents = function () {
+  document.addEventListener("touchstart", function (evt) {
+    console.log(evt);
+  });
   Moco.tokenElements().forEach(function (token) {
     token.addEventListener("touchstart", function (evt) {
       console.log(evt);
