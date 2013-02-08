@@ -14,11 +14,15 @@ body {
 }
 
 .CodeMirror pre {
-  font-size: 10px;
+  font-size: 8px;
 }
 
 .CodeMirror pre.function {
   background-color: #d6e4f2;
   border-top: 1px solid #fff;
   line-height: 1.8;
+}
+
+.CodeMirror-gutter-elt {
+  background-color: #78c56e;
 }
