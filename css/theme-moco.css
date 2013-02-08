@@ -2,11 +2,11 @@
 
 /* Color scheme */
 
-.cm-s-moco .cm-keyword { color: #cda869; }
-.cm-s-moco .cm-atom { color: #CF7EA9; }
-.cm-s-moco .cm-number { color: #78CF8A; }
-.cm-s-moco .cm-def { color: #aac6e3; }
-.cm-s-moco .cm-variable { color: #ffb795; }
+.cm-s-moco .cm-keyword { color: #e7bd77; }
+.cm-s-moco .cm-atom { color: #e88dbe; }
+.cm-s-moco .cm-number { color: #6ee26a; }
+.cm-s-moco .cm-def { color: #a9cff7; }
+.cm-s-moco .cm-variable { color: #ffdfc9; }
 .cm-s-moco .cm-variable-2 { color: #eed1b3; }
 .cm-s-moco .cm-variable-3 { color: #faded3; }
 .cm-s-moco .cm-property { color: #eed1b3; }
