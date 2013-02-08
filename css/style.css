@@ -30,5 +30,5 @@ body {
 
 .CodeMirror pre span.highlight {
   color: black;
-  background-color: white;
+  background-color: #ccc;
 }
