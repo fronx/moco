@@ -96,7 +96,7 @@ Moco.tokenElements = function () {
 
 Moco.filteredTokenElements = function (type, value) {
   return Moco.tokenElements().filter(function (token) {
-    return (token.className == type) && (token.innerHTML == value)
+    return (token.innerHTML == value) // ignore type for now. because definition/use. (token.className == type) &&
   })
 }
 
