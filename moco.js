@@ -94,15 +94,16 @@ Moco.tokenElements = function () {
   return $$('.CodeMirror-lines pre span');
 }
 
-Moco.clearHighlights = function () {
-  $$('.CodeMirror-lines pre span.highlight').forEach(function (elem) {
-    elem.classList.remove('highlight')
-  })
-}
-
 Moco.filteredTokenElements = function (type, value) {
   return Moco.tokenElements().filter(function (token) {
     return (token.className == type) && (token.innerHTML == value)
+  })
+}
+
+Moco.clearHighlights = function () {
+  $$('.CodeMirror-lines pre span').forEach(function (elem) {
+    elem.classList.remove('pre-highlight');
+    elem.classList.remove('highlight');
   })
 }
 
@@ -113,17 +114,34 @@ Moco.highlight = function (type, value) {
   })
 }
 
+Moco.preHighlight = function (type, value) {
+  Moco.filteredTokenElements(type, value).forEach(function (token) {
+    token.classList.add('pre-highlight')
+  })
+}
+
 Moco.setUpTokenTouchEvents = function () {
-  document.addEventListener("touchstart", function (evt) {
-    console.log(evt);
-    if (evt.target.tagName == 'SPAN') {
-      value = evt.target.outerText
-      type  = evt.target.classList[0]
-      Moco.highlight(type, value);
-    } else {
-      // don't clear it, because scrolling.
-      // Moco.clearHighlights();
+  function preHighlight (token) {
+    if (token.tagName == 'SPAN') {
+      value = token.outerText
+      type  = token.classList[0]
+      Moco.preHighlight(type, value);
     }
+  }
+  function highlight (token) {
+    if (token.tagName == 'SPAN') {
+      value = token.outerText
+      type  = token.classList[0]
+      Moco.highlight(type, value);
+    }
+  }
+  document.addEventListener("touchstart", function (evt) {
+    console.log('touchstart');
+    preHighlight(evt.target)
+  }, false);
+  document.addEventListener("touchend", function (evt) {
+    console.log('touchend');
+    highlight(evt.target)
   }, false);
 }
 
