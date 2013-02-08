@@ -101,15 +101,11 @@ function isKeyWord (token, keyword) {
 Moco.linesWithFunction = function () {
   return toArray(Moco.editorLineElements()).reduce(function (acc, line, index) {
     if (toArray(line.children).some(function (token) { return isKeyWord(token, 'function') })) {
-      return acc.concat([index])
+      return acc.concat([index - 1])
     } else {
       return acc
     }
   }, []) // initial value
-}
-
-Moco.foldFunctions = function () {
-  '.CodeMirror-lines pre span'
 }
 
 Moco.replacePage = function () {
