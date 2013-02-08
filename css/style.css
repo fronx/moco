@@ -12,3 +12,7 @@ body {
   height: 100%;
   line-height: 1.8;
 }
+
+.CodeMirror pre.function {
+  border: 1px solid red;
+}

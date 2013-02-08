@@ -23,6 +23,7 @@ window.onload = function() {
 
   Moco.linesWithFunction().reverse().forEach(function (lineNum) {
     console.log(lineNum);
+    editor.addLineClass(lineNum, "text", "function")
     Moco.foldFunc(editor, lineNum);
   });
 }
