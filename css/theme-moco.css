@@ -38,13 +38,13 @@
 }
 
 /* Font */
-.cm-s-moco .cm-keyword { font-weight: bold; }
+.CodeMirror { font-weight: bold; }
 
 /* Editor styling */
 
 .cm-s-moco.CodeMirror {
   line-height: 1.40em;
-  font-family: Menlo,"Andale Mono","lucida console","Courier New",monospace !important;
+  font-family: Menlo,"Andale Mono","lucida console","Courier","Courier New",monospace !important;
   color: #E6E1DC;
   background-color: #202020;
 }
