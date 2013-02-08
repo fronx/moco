@@ -54,3 +54,6 @@ body {
   padding: 7px 10px;
   border-right: 1px solid #777;
 }
+
+.CodeMirror-foldmarker {
+}
