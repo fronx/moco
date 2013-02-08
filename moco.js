@@ -151,20 +151,14 @@ Moco.setUpTokenTouchEvents = function () {
     console.log('touchend');
     highlight(evt.target)
   }, false);
+  document.addEventListener("touchcancel", function (evt) {
+    console.log('touchcancel');
+    Moco.clearPreHighlights();
+  }, false);
 }
 
 Moco.githubApiUrl = function (url) {
   return url.replace('//github.com', '//api.github.com/repos').replace('/blob/master/', '/contents/');
-}
-
-Moco.editor = function (url, mode) {
-  get(Moco.githubApiUrl(url), function (response) {
-    Moco.initEditor(
-      Moco.createTextArea(),
-      Moco.unpackContentAsCode(response),
-      mode
-    );
-  });
 }
 
 Moco.editorLineElements = function () {
@@ -185,6 +179,16 @@ Moco.expandAll = function () {
   editor.eachLine(function (handle) {
     Moco.foldFunc(editor, editor.getLineNumber(handle));
   })
+}
+
+Moco.editor = function (url, mode) {
+  get(Moco.githubApiUrl(url), function (response) {
+    Moco.initEditor(
+      Moco.createTextArea(),
+      Moco.unpackContentAsCode(response),
+      mode
+    );
+  });
 }
 
 Moco.replacePage = function () {
