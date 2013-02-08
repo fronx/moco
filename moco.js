@@ -101,13 +101,19 @@ Moco.filteredTokenElements = function (type, value) {
 }
 
 Moco.clearHighlights = function () {
-  $$('.CodeMirror-lines pre span').forEach(function (elem) {
-    elem.classList.remove('pre-highlight');
+  $$('.CodeMirror-lines pre span.highlight').forEach(function (elem) {
     elem.classList.remove('highlight');
   })
 }
 
+Moco.clearPreHighlights = function () {
+  $$('.CodeMirror-lines pre span.pre-highlight').forEach(function (elem) {
+    elem.classList.remove('pre-highlight');
+  })
+}
+
 Moco.highlight = function (type, value) {
+  Moco.clearPreHighlights();
   Moco.clearHighlights();
   Moco.filteredTokenElements(type, value).forEach(function (token) {
     token.classList.add('highlight')
@@ -123,16 +129,13 @@ Moco.preHighlight = function (type, value) {
 Moco.setUpTokenTouchEvents = function () {
   function preHighlight (token) {
     if (token.tagName == 'SPAN') {
-      value = token.outerText
-      type  = token.classList[0]
-      Moco.preHighlight(type, value);
+      console.log(token);
+      Moco.preHighlight(token.classList[0], token.outerText);
     }
   }
   function highlight (token) {
     if (token.tagName == 'SPAN') {
-      value = token.outerText
-      type  = token.classList[0]
-      Moco.highlight(type, value);
+      Moco.highlight(token.classList[0], token.outerText);
     }
   }
   document.addEventListener("touchstart", function (evt) {
