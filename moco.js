@@ -3,7 +3,7 @@
 Moco = {};
 
 // http://stackoverflow.com/questions/2820249/base64-encoding-and-decoding-in-client-side-javascript
-decodeBase64 = function (s) {
+function decodeBase64 (s) {
   var e={},i,k,v=[],r='',w=String.fromCharCode;
   var n=[[65,91],[97,123],[48,58],[43,44],[47,48]];
 
@@ -43,6 +43,18 @@ function loadStyles (url) {
   document.body.appendChild(elem);
 }
 
+function toArray (weirdness) {
+  return Array.prototype.slice.call(weirdness);
+}
+
+function isKeyWord (token, keyword) {
+  return (token.className == "cm-keyword") && (token.innerHTML == keyword)
+}
+
+function $$ (selector) {
+  return toArray(document.querySelectorAll(selector));
+}
+
 Moco.unpackContentAsCode = function (response) {
   var doc = JSON.parse(response);
   var lines64 = doc['content'].split("\n")
@@ -68,10 +80,46 @@ Moco.initEditor = function (textarea, code, mode) {
     readOnly:     'nocursor',
     lineNumbers:  false,
     fixedGutter:  false,
-    theme:        'moco'
+    theme:        'moco',
+    gutters:      [ 'fold' ]
   });
-  editor.on("gutterClick", Moco.foldFunc);
+  // window.editor.setGutterMarker(line, gutterID, value)
+  window.editor.on("gutterClick", Moco.foldFunc);
+  window.editor.on('update', function () { console.log('cm.update') });
+  Moco.setUpTokenTouchEvents();
   return window.editor;
+}
+
+Moco.tokenElements = function () {
+  return $$('.CodeMirror-lines pre span');
+}
+
+Moco.clearHighlights = function () {
+  $$('.CodeMirror-lines pre span.highlight').forEach(function (elem) {
+    elem.classList.remove('highlight')
+  })
+}
+
+Moco.filteredTokenElements = function (type, value) {
+  return Moco.tokenElements().filter(function (token) {
+    return (token.className == type) && (token.innerHTML == value)
+  })
+}
+
+Moco.highlight = function (type, value) {
+  Moco.clearHighlights();
+  Moco.filteredTokenElements(type, value).forEach(function (token) {
+    token.classList.add('highlight')
+  })
+}
+
+Moco.setUpTokenTouchEvents = function () {
+  Moco.tokenElements().forEach(function (token) {
+    token.addEventListener("touchstart", function (evt) {
+      console.log(evt);
+      Moco.highlight('cm-variable', 'Moco');
+    }, false);
+  });
 }
 
 Moco.githubApiUrl = function (url) {
@@ -89,19 +137,11 @@ Moco.editor = function (url, mode) {
 }
 
 Moco.editorLineElements = function () {
-  return document.querySelectorAll('.CodeMirror-lines pre');
-}
-
-function toArray (weirdness) {
-  return Array.prototype.slice.call(weirdness);
-}
-
-function isKeyWord (token, keyword) {
-  return (token.className == "cm-keyword") && (token.innerHTML == keyword)
+  return $$('.CodeMirror-lines pre');
 }
 
 Moco.linesWithFunction = function () {
-  return toArray(Moco.editorLineElements()).reduce(function (acc, line, index) {
+  return Moco.editorLineElements().reduce(function (acc, line, index) {
     if (toArray(line.children).some(function (token) { return isKeyWord(token, 'function') })) {
       return acc.concat([index - 1])
     } else {
