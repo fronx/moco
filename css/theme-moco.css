@@ -19,7 +19,7 @@
 .cm-s-moco .cm-qualifier { color: yellow; }
 .cm-s-moco .cm-builtin { color: #9999cc; }
 .cm-s-moco .cm-bracket { color: #24C2C7; }
-.cm-s-moco .cm-tag { color: #fee4ff }
+.cm-s-moco .cm-tag { color: #fee4ff; }
 .cm-s-moco .cm-attribute {  color: #9B859D; }
 .cm-s-moco .cm-header {color: blue;}
 .cm-s-moco .cm-quote { color: #24C2C7; }
@@ -37,11 +37,14 @@
   background: rgba(255, 255, 255, 0.10);
 }
 
+/* Font */
+.cm-s-moco .cm-keyword { font-weight: bold; }
+
 /* Editor styling */
 
 .cm-s-moco.CodeMirror {
   line-height: 1.40em;
-  font-family: Monaco, Menlo,"Andale Mono","lucida console","Courier New",monospace !important;
+  font-family: Menlo,"Andale Mono","lucida console","Courier New",monospace !important;
   color: #E6E1DC;
   background-color: #202020;
 }
