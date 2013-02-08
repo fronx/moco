@@ -68,7 +68,7 @@ Moco.initEditor = function (textarea, code, mode) {
     readOnly:     'nocursor',
     lineNumbers:  false,
     fixedGutter:  false,
-    theme:        'ambience'
+    theme:        'ambiance'
   });
   editor.on("gutterClick", Moco.foldFunc);
   return window.editor;
